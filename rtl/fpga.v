@@ -243,7 +243,7 @@ sync_signal_inst (
 wire phy_gmii_clk_int;
 wire phy_gmii_rst_int;
 wire phy_gmii_clk_en_int;
-wire phy_gmii_clk_en_mac = ~phy_gmii_clk_en_int;
+wire phy_gmii_clk_en_mac = phy_gmii_clk_en_int;
 wire [7:0] phy_gmii_txd_int;
 wire phy_gmii_tx_en_int;
 wire phy_gmii_tx_er_int;
@@ -1186,6 +1186,7 @@ core_inst (
     .pcspma_status_vector(pcspma_uart_status_vector),
     .pcspma_raw_status_vector(pcspma_status_vector),
     .pcspma_diag_vector(pcspma_diag_vector),
+    .mdio_state(state_reg),
     .mdio_bmcr(mdio_bmcr_reg),
     .mdio_bmsr(mdio_bmsr_reg),
     .mdio_phycr(mdio_phycr_reg),
