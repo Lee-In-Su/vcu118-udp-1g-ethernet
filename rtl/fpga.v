@@ -347,8 +347,6 @@ always @(posedge clk_125mhz_int) begin
         pcspma_config_seq_reg <= 30'd0;
     end else if (pcspma_config_seq_restart_req_reg) begin
         pcspma_config_seq_reg <= 30'd0;
-    end else if (!pcspma_tx_locked && (pcspma_an_restart_config || (pcspma_config_seq_reg == 30'h3fffffff))) begin
-        pcspma_config_seq_reg <= 30'd0;
     end else if (pcspma_config_seq_reg != 30'h3fffffff) begin
         pcspma_config_seq_reg <= pcspma_config_seq_reg + 1'b1;
     end
