@@ -301,6 +301,7 @@ wire [1:0] pcspma_status_pause              = pcspma_status_vector[15:14];
 wire [4:0] pcspma_config_vector = 5'b00001;
 
 reg [29:0] pcspma_config_seq_reg = 30'd0;
+reg pcspma_config_seq_restart_req_reg = 1'b0;
 wire pcspma_configuration_valid = pcspma_config_seq_reg == 30'd125000000;
 wire pcspma_an_adv_config_val = pcspma_config_seq_reg == 30'd125000008;
 wire pcspma_an_restart_config = pcspma_config_seq_reg == 30'd937500016;
@@ -343,6 +344,8 @@ wire [15:0] pcspma_diag_vector = {
 
 always @(posedge clk_125mhz_int) begin
     if (eth_rst_125mhz_int) begin
+        pcspma_config_seq_reg <= 30'd0;
+    end else if (pcspma_config_seq_restart_req_reg) begin
         pcspma_config_seq_reg <= 30'd0;
     end else if (!pcspma_tx_locked && (pcspma_an_restart_config || (pcspma_config_seq_reg == 30'h3fffffff))) begin
         pcspma_config_seq_reg <= 30'd0;
@@ -506,6 +509,8 @@ always @(posedge clk_125mhz_int) begin
         mdio_cmd_valid <= 1'b0;
         mdio_read_slot_reg <= 4'd0;
         mdio_read_pending_reg <= 1'b0;
+        toggle_cooldown_reg <= 4'd0;
+        pcspma_config_seq_restart_req_reg <= 1'b0;
         mdio_bmcr_reg <= 16'd0;
         mdio_bmsr_reg <= 16'd0;
         mdio_phycr_reg <= 16'd0;
@@ -523,6 +528,7 @@ always @(posedge clk_125mhz_int) begin
         mdio_reg_1f_reg <= 16'd0;
         mdio_ext_16f_reg <= 16'd0;
     end else begin
+        pcspma_config_seq_restart_req_reg <= 1'b0;
         mdio_cmd_valid <= mdio_cmd_valid & !mdio_cmd_ready;
         if (mdio_read_pending_reg) begin
             if (mdio_data_out_valid) begin
@@ -1072,6 +1078,10 @@ always @(posedge clk_125mhz_int) begin
                     mdio_cmd_opcode <= 2'b01;
                     mdio_cmd_valid <= 1'b1;
                     toggle_cooldown_reg <= 4'd9;
+                    delay_reg <= 20'hfffff;
+                    state_reg <= 6'd58;
+                end
+                6'd58: begin
                     state_reg <= 6'd13;
                 end
             endcase
