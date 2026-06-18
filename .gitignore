@@ -1,0 +1,25 @@
+# Vivado generated files
+vivado_project/*.jou
+vivado_project/*.log
+vivado_project/*.str
+vivado_project/.Xil/
+vivado_project/vcu118_udp_1g_jy_pcs_an.cache/
+vivado_project/vcu118_udp_1g_jy_pcs_an.hw/
+vivado_project/vcu118_udp_1g_jy_pcs_an.ip_user_files/
+vivado_project/vcu118_udp_1g_jy_pcs_an.runs/
+vivado_project/vcu118_udp_1g_jy_pcs_an.sim/
+vivado_project/vcu118_udp_1g_jy_pcs_an.srcs/sources_1/ip/
+
+# Bitstream (large binary)
+*.bit
+*.bin
+*.mcs
+
+# Synthesis/implementation reports
+*.rpt
+*.xpe
+
+# Temp files
+*.tmp
+*.swp
+*~
