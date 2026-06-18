@@ -352,7 +352,7 @@ always @(posedge clk_125mhz_int) begin
     end
 end
 
-wire [15:0] pcspma_an_config_vector = 16'hD801;
+wire [15:0] pcspma_an_config_vector = 16'h0020;
 bd_525a_pcs_pma_0 
 eth_pcspma (
     // SGMII
