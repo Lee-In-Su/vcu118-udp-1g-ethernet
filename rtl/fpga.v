@@ -347,12 +347,12 @@ always @(posedge clk_125mhz_int) begin
         pcspma_config_seq_reg <= 30'd0;
     end else if (pcspma_config_seq_restart_req_reg) begin
         pcspma_config_seq_reg <= 30'd0;
-    end else if (pcspma_config_seq_reg != 30'h3fffffff) begin
+    end else begin
         pcspma_config_seq_reg <= pcspma_config_seq_reg + 1'b1;
     end
 end
 
-wire [15:0] pcspma_an_config_vector = 16'h0020;
+wire [15:0] pcspma_an_config_vector = 16'hD801;
 bd_525a_pcs_pma_0 
 eth_pcspma (
     // SGMII
@@ -493,7 +493,7 @@ reg [15:0] mdio_ext_strap_sts1_reg = 16'd0;
 reg [15:0] mdio_reg_1f_reg = 16'd0;
 reg [15:0] mdio_ext_16f_reg = 16'd0;
 reg [5:0] state_reg = 0;
-reg [3:0] toggle_cooldown_reg = 4'd0;
+reg [15:0] toggle_cooldown_reg = 16'd0;
 reg [3:0] mdio_read_slot_reg = 4'd0;
 reg mdio_read_pending_reg = 1'b0;
 
@@ -507,7 +507,7 @@ always @(posedge clk_125mhz_int) begin
         mdio_cmd_valid <= 1'b0;
         mdio_read_slot_reg <= 4'd0;
         mdio_read_pending_reg <= 1'b0;
-        toggle_cooldown_reg <= 4'd0;
+        toggle_cooldown_reg <= 16'd0;
         pcspma_config_seq_restart_req_reg <= 1'b0;
         mdio_bmcr_reg <= 16'd0;
         mdio_bmsr_reg <= 16'd0;
@@ -1014,7 +1014,7 @@ always @(posedge clk_125mhz_int) begin
                         state_reg <= 6'd50;
                     end else begin
                         if (toggle_cooldown_reg != 4'd0) begin
-                            toggle_cooldown_reg <= toggle_cooldown_reg - 4'd1;
+                            toggle_cooldown_reg <= toggle_cooldown_reg - 16'd1;
                         end
                         state_reg <= 6'd13;
                     end
@@ -1075,7 +1075,7 @@ always @(posedge clk_125mhz_int) begin
                     mdio_cmd_data <= 16'h4000;
                     mdio_cmd_opcode <= 2'b01;
                     mdio_cmd_valid <= 1'b1;
-                    toggle_cooldown_reg <= 4'd9;
+                    toggle_cooldown_reg <= 16'd20;
                     delay_reg <= 20'hfffff;
                     state_reg <= 6'd58;
                 end
